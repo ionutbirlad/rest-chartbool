@@ -10,7 +10,18 @@
   clear: both;
 }
 
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .container{
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.wrapper{
+  width: 60vw;
+  margin-top: 100px;
 }
