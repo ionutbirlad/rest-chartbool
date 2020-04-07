@@ -3,14 +3,12 @@ $(document).ready(function () {
   var personalNumber = "4003";
   var url = "http://157.230.17.132:" + personalNumber + "/sales";
 
+// ------------------------------------------------PRIMO GRAFICO------------------------------------------------
   $.ajax({
     url: url,
     method: "GET",
     success: function (data) {
-      var json = [];
-      for (var i = 0; i < data.length; i++) {
-        json.push(data[i]);
-      }
+      var json = data;
       // console.log(json);
 
     // ---------------creazione passaggio intermedio ed in seguito gli array finali---------------
@@ -86,6 +84,90 @@ $(document).ready(function () {
       alert("Qualcosa è andato storto!");
     }
   });
+// ------------------------------------------------FINE PRIMO GRAFICO------------------------------------------------
+
+
+
+// ------------------------------------------------SECONDO GRAFICO-----------------------------------------------------
+  $.ajax({
+    url: url,
+    method: "GET",
+    success: function (data) {
+      var json = data;
+      // console.log(json);
+
+    // ---------------creazione passaggio intermedio ed in seguito gli array finali---------------
+      var months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
+      var totali = [];
+
+      for (var i = 0; i <= 11; i++) {
+        var indiceMese = i;
+        // console.log(indiceMese);
+        var totaleMese = 0;
+        for (var j = 0; j < json.length; j++) {
+          var dataOperazione = moment(json[j].date, "DD-MM-YYYY");
+          var meseOperazione = dataOperazione.month();
+          // console.log(dataOperazione);
+          // console.log(meseOperazione);
+          if (meseOperazione == indiceMese) {
+            totaleMese += parseInt(json[j].amount);
+          }
+        }
+        totali.push(totaleMese);
+      }
+      // console.log(totali);
+    // ---------------fine creazione passaggio intermedio ed in seguito gli array finali---------------
+
+    // --------------------------------PARTE GRAFICO--------------------------------
+    var ctx = document.getElementById('myChart-two').getContext('2d');
+    var chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: months,
+          datasets: [{
+              label: 'Fatturato',
+              backgroundColor: '#341f97',
+              data: totali
+          }]
+      },
+
+      // Configuration options go here
+      options: {
+        title: {
+            display: true,
+            text: 'Fatturato mensile',
+            fontSize: 20
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              return data['labels'][tooltipItem['index']] + ': ' + data['datasets'][0]['data'][tooltipItem['index']] + '%';
+            }
+          }
+        }
+      }
+    });
+    // --------------------------------PARTE GRAFICO--------------------------------
+    },
+    error: function (err) {
+      alert("Qualcosa è andato storto!");
+    }
+  });
+
+// ------------------------------------------------FINE SECONDO GRAFICO------------------------------------------------
 
 
 
