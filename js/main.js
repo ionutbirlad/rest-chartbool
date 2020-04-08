@@ -8,50 +8,88 @@ $(document).ready(function () {
     url: url,
     method: "GET",
     success: function (data) {
-      var json = data;
-      // console.log(json);
+      var infoGrafico = mockupDatiTorta(data);
+      creazioneGraficoTorta(infoGrafico.nomi, infoGrafico.datiInPercentuale, infoGrafico.colori);
+    },
+    error: function (err) {
+      alert("Qualcosa è andato storto!");
+    }
+  });
+// ------------------------------------------------FINE PRIMO GRAFICO------------------------------------------------
 
-    // ---------------creazione passaggio intermedio ed in seguito gli array finali---------------
-      var storageIntermedio = {};
 
-      for (var i = 0; i < json.length; i++) {
-        var elementoArray = json[i];
-        var nome = elementoArray.salesman;
-        if (storageIntermedio[nome] === undefined) {
-          storageIntermedio[nome] = 0;
-        }
-        storageIntermedio[nome] += elementoArray.amount;
+
+// ------------------------------------------------SECONDO GRAFICO-----------------------------------------------------
+  $.ajax({
+    url: url,
+    method: "GET",
+    success: function (data) {
+      var infoGrafico = mockupDatiLinea(data);
+      creazioneGraficoLinea(infoGrafico.mesi, infoGrafico.fatturati);
+    },
+    error: function (err) {
+      alert("Qualcosa è andato storto!");
+    }
+  });
+
+// ------------------------------------------------FINE SECONDO GRAFICO------------------------------------------------
+
+
+// -----------------------------------------------------FUNZIONI-----------------------------------------------------
+  // MOCKUP DATI GRAFICO TORTA
+  function mockupDatiTorta(data) {
+    var json = data;
+    // console.log(json);
+
+    var storageIntermedio = {};
+
+    for (var i = 0; i < json.length; i++) {
+      var elementoArray = json[i];
+      var nome = elementoArray.salesman;
+      if (storageIntermedio[nome] === undefined) {
+        storageIntermedio[nome] = 0;
       }
-      // console.log(storageIntermedio);
+      storageIntermedio[nome] += elementoArray.amount;
+    }
+    // console.log(storageIntermedio);
 
-      var labels = [];
-      var dataGrafico = [];
+    var labels = [];
+    var dataGrafico = [];
 
-      for (var key in storageIntermedio) {
-        labels.push(key);
-        dataGrafico.push(storageIntermedio[key]);
-      }
+    for (var key in storageIntermedio) {
+      labels.push(key);
+      dataGrafico.push(storageIntermedio[key]);
+    }
 
-      // ---------------------Calcolo in percentuale della parte di ogni venditore---------------------
-      var totaleFatturato = 0;
-      for (var i = 0; i < dataGrafico.length; i++) {
-        totaleFatturato += parseInt(dataGrafico[i]);
-      }
+    // ---------------------Calcolo in percentuale della parte di ogni venditore---------------------
+    var totaleFatturato = 0;
+    for (var i = 0; i < dataGrafico.length; i++) {
+      totaleFatturato += parseInt(dataGrafico[i]);
+    }
 
-      var dataGraficoPercentuale = [];
-      for (var i = 0; i < dataGrafico.length; i++) {
-        var valorePercentuale = ((parseInt(dataGrafico[i]) / totaleFatturato) * 100).toFixed(2);
-        dataGraficoPercentuale.push(valorePercentuale);
-      }
-      // ---------------------Calcolo in percentuale della parte di ogni venditore---------------------
+    var dataGraficoPercentuale = [];
+    for (var i = 0; i < dataGrafico.length; i++) {
+      var valorePercentuale = ((parseInt(dataGrafico[i]) / totaleFatturato) * 100).toFixed(2);
+      dataGraficoPercentuale.push(valorePercentuale);
+    }
+    // ---------------------Calcolo in percentuale della parte di ogni venditore---------------------
 
-      // console.log(labels);
-      // console.log(dataGrafico);
-    // ---------------fine creazione passaggio intermedio ed in seguito gli array finali---------------
-
+    // console.log(labels);
+    // console.log(dataGrafico);
     var colors = ["#48dbfb", "#ff9f43", "#1dd1a1", "#ff9ff3"]
 
-    // --------------------------------PARTE GRAFICO--------------------------------
+    return  {
+      nomi: labels,
+      datiInPercentuale: dataGraficoPercentuale,
+      colori: colors
+    };
+  }
+  // MOCKUP DATI GRAFICO TORTA
+
+
+
+  // CREAZIONE GRAFICO TORTA
+  function creazioneGraficoTorta(labels, info, colors) {
       var ctx = document.getElementById('myChart').getContext('2d');
       var myPieChart = new Chart(ctx, {
           type: 'pie',
@@ -60,7 +98,7 @@ $(document).ready(function () {
               datasets: [{
                   label: 'My First dataset',
                   backgroundColor: colors,
-                  data: dataGraficoPercentuale
+                  data: info
               }]
           },
           options: {
@@ -78,60 +116,60 @@ $(document).ready(function () {
             }
         }
       });
-    // --------------------------------PARTE GRAFICO--------------------------------
-    },
-    error: function (err) {
-      alert("Qualcosa è andato storto!");
-    }
-  });
-// ------------------------------------------------FINE PRIMO GRAFICO------------------------------------------------
+  }
+  // CREAZIONE GRAFICO TORTA
 
 
 
-// ------------------------------------------------SECONDO GRAFICO-----------------------------------------------------
-  $.ajax({
-    url: url,
-    method: "GET",
-    success: function (data) {
-      var json = data;
-      // console.log(json);
+  // MOCKUP DATI GRAFICO LINEA
+  function mockupDatiLinea(data) {
+    var json = data;
+    // console.log(json);
 
-    // ---------------creazione passaggio intermedio ed in seguito gli array finali---------------
-      var months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-      ];
-      var totali = [];
+    var months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+    var totali = [];
 
-      for (var i = 0; i <= 11; i++) {
-        var indiceMese = i;
-        // console.log(indiceMese);
-        var totaleMese = 0;
-        for (var j = 0; j < json.length; j++) {
-          var dataOperazione = moment(json[j].date, "DD-MM-YYYY");
-          var meseOperazione = dataOperazione.month();
-          // console.log(dataOperazione);
-          // console.log(meseOperazione);
-          if (meseOperazione == indiceMese) {
-            totaleMese += parseInt(json[j].amount);
-          }
+    for (var i = 0; i <= 11; i++) {
+      var indiceMese = i;
+      // console.log(indiceMese);
+      var totaleMese = 0;
+      for (var j = 0; j < json.length; j++) {
+        var dataOperazione = moment(json[j].date, "DD-MM-YYYY");
+        var meseOperazione = dataOperazione.month();
+        // console.log(dataOperazione);
+        // console.log(meseOperazione);
+        if (meseOperazione == indiceMese) {
+          totaleMese += parseInt(json[j].amount);
         }
-        totali.push(totaleMese);
       }
-      // console.log(totali);
-    // ---------------fine creazione passaggio intermedio ed in seguito gli array finali---------------
+      totali.push(totaleMese);
+    }
+    // console.log(totali);
 
-    // --------------------------------PARTE GRAFICO--------------------------------
+    return {
+      mesi: months,
+      fatturati: totali
+    };
+  }
+  // MOCKUP DATI GRAFICO LINEA
+
+
+
+  // CREAZIONE GRAFICO LINEA
+  function creazioneGraficoLinea(months, totali) {
     var ctx = document.getElementById('myChart-two').getContext('2d');
     var chart = new Chart(ctx, {
       type: 'line',
@@ -160,15 +198,9 @@ $(document).ready(function () {
         }
       }
     });
-    // --------------------------------PARTE GRAFICO--------------------------------
-    },
-    error: function (err) {
-      alert("Qualcosa è andato storto!");
-    }
-  });
-
-// ------------------------------------------------FINE SECONDO GRAFICO------------------------------------------------
-
+  }
+  // CREAZIONE GRAFICO LINEA
+// -----------------------------------------------------FUNZIONI-----------------------------------------------------
 
 
 
