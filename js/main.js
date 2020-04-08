@@ -93,6 +93,7 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
 
     // console.log(labels);
     // console.log(dataGrafico);
+    console.log(dataGraficoPercentuale);
     var colors = ["#48dbfb", "#ff9f43", "#1dd1a1", "#ff9ff3"]
 
     return  {
@@ -274,12 +275,15 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
 
   // FUNZIONE AGGIORNAMENTO VENDITE
   function updateSales(url) {
-    $("#myChart").empty();
-    $("#myChart-two").empty();
+    $("#myChart").remove();
+    $("#myChart-two").remove();
+    $(".wrapper-one").append("<canvas id='myChart'></canvas>");
+    $(".wrapper-two").append("<canvas id='myChart-two'></canvas>");
     var persona = $(".who-post-to").val();
     var meseSelezionato = $(".month-to-post").val();
     var dataInCuiInserire = moment("01/" + meseSelezionato + "/2017", "DD/MM/YYYY");
-    var importoDaInserire = $(".text-post").val();
+    var importo = $(".text-post").val();
+    var importoDaInserire = parseInt(importo);
     // console.log(persona);
     // console.log(meseSelezionato);
     // console.log(dataInCuiInserire.format("DD-MM-YYYY"));

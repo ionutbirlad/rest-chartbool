@@ -21,7 +21,11 @@ body{
   margin: 0 auto;
 }
 
-.wrapper{
+.wrapper-one{
+  width: 50vw;
+  margin-top: 100px;
+}
+.wrapper-two{
   width: 50vw;
   margin-top: 100px;
 }
