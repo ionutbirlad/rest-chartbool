@@ -1,16 +1,28 @@
 $(document).ready(function () {
 
+  // --------------------------------------------------URL--------------------------------------------------
   var personalNumber = "4003";
   var url = "http://157.230.17.132:" + personalNumber + "/sales";
+  // --------------------------------------------------URL--------------------------------------------------
+
+  // ----------------------------------------------HANDLEBARS----------------------------------------------
+    // DA RIPETERE SOLO UNA VOLTA PER TEMPLATE
+     var source = $("#entry-template").html();
+     var template = Handlebars.compile(source);
+    // DA RIPETERE SOLO UNA VOLTA PER TEMPLATE
+
+    popolaNomiSelect(url);
+  // ----------------------------------------------HANDLEBARS----------------------------------------------
+
 
 // ------------------------------------------------PRIMO GRAFICO------------------------------------------------
-  ajaxCall(url, mockupDatiTorta, creazioneGraficoTorta, "torta");
+  chartAjaxCall(url, mockupDatiTorta, creazioneGraficoTorta, "torta");
 // ------------------------------------------------FINE PRIMO GRAFICO------------------------------------------------
 
 
 
 // ------------------------------------------------SECONDO GRAFICO-----------------------------------------------------
-  ajaxCall(url, mockupDatiLinea, creazioneGraficoLinea, "linea");
+  chartAjaxCall(url, mockupDatiLinea, creazioneGraficoLinea, "linea");
 // ------------------------------------------------FINE SECONDO GRAFICO------------------------------------------------
 
 
@@ -34,7 +46,7 @@ $(document).ready(function () {
   // MOCKUP DATI GRAFICO TORTA
   function mockupDatiTorta(data) {
     var json = data;
-    // console.log(json);
+    console.log(json);
 
     var storageIntermedio = {};
 
@@ -199,7 +211,7 @@ $(document).ready(function () {
 
 
   // CHIAMATA AJAX
-  function ajaxCall(url, mockup, createChart, type) {
+  function chartAjaxCall(url, mockup, createChart, type) {
     $.ajax({
       url: url,
       method: "GET",
@@ -218,6 +230,35 @@ $(document).ready(function () {
     });
   }
   // CHIAMATA AJAX
+
+
+
+  // POPOLAMENTO NOMI IN SELECT
+  function popolaNomiSelect(url) {
+    $.ajax({
+      url: url,
+      method: "GET",
+      success: function (data) {
+        var names = [];
+        for (var i = 0; i < data.length; i++) {
+          if (!(names.includes(data[i].salesman))) {
+            names.push(data[i].salesman);
+          }
+        }
+        for (var i = 0; i < names.length; i++) {
+          var namesInObject = {
+            persona: names[i]
+          };
+          var templateCompiled = template(namesInObject);
+          $(".who-post-to").append(templateCompiled);
+        }
+      },
+      error: function (err) {
+        alert("Qualcosa è andato storto!");
+      }
+    });
+  }
+  // POPOLAMENTO NOMI IN SELECT
 // -----------------------------------------------------FUNZIONI-----------------------------------------------------
 
 
