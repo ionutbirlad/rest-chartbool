@@ -1,29 +1,39 @@
 $(document).ready(function () {
 
-  // --------------------------------------------------URL--------------------------------------------------
-  var personalNumber = "4003";
-  var url = "http://157.230.17.132:" + personalNumber + "/sales";
-  // --------------------------------------------------URL--------------------------------------------------
+// -----------------------------------------------------URL------------------------------------------------------
+var personalNumber = "4003";
+var url = "http://157.230.17.132:" + personalNumber + "/sales";
+// -----------------------------------------------------URL------------------------------------------------------
 
-  // ----------------------------------------------HANDLEBARS----------------------------------------------
-    // DA RIPETERE SOLO UNA VOLTA PER TEMPLATE
-     var source = $("#entry-template").html();
-     var template = Handlebars.compile(source);
-    // DA RIPETERE SOLO UNA VOLTA PER TEMPLATE
+// --------------------------------------------------HANDLEBARS--------------------------------------------------
+  // DA RIPETERE SOLO UNA VOLTA PER TEMPLATE
+   var source = $("#entry-template").html();
+   var template = Handlebars.compile(source);
+  // DA RIPETERE SOLO UNA VOLTA PER TEMPLATE
 
-    popolaNomiSelect(url);
-  // ----------------------------------------------HANDLEBARS----------------------------------------------
+  popolaNomiSelect(url);
+// --------------------------------------------------HANDLEBARS--------------------------------------------------
 
 
-// ------------------------------------------------PRIMO GRAFICO------------------------------------------------
+// ------------------------------------------------PRIMO GRAFICO-------------------------------------------------
   chartAjaxCall(url, mockupDatiTorta, creazioneGraficoTorta, "torta");
-// ------------------------------------------------FINE PRIMO GRAFICO------------------------------------------------
+// ----------------------------------------------FINE PRIMO GRAFICO----------------------------------------------
 
 
 
-// ------------------------------------------------SECONDO GRAFICO-----------------------------------------------------
+// ---------------------------------------------SECONDO GRAFICO--------------------------------------------------
   chartAjaxCall(url, mockupDatiLinea, creazioneGraficoLinea, "linea");
-// ------------------------------------------------FINE SECONDO GRAFICO------------------------------------------------
+// ---------------------------------------------FINE SECONDO GRAFICO---------------------------------------------
+
+
+
+// ------------------------AGGIUNTA NUOVE INFORMAZIONI AI GRAFICI + AGGIORNAMENTO GRAFICI------------------------
+  $(".btn-post").click(function () {
+    updateSales(url);
+    chartAjaxCall(url, mockupDatiTorta, creazioneGraficoTorta, "torta");
+    chartAjaxCall(url, mockupDatiLinea, creazioneGraficoLinea, "linea");
+  });
+// ------------------------AGGIUNTA NUOVE INFORMAZIONI AI GRAFICI + AGGIORNAMENTO GRAFICI------------------------
 
 
 
@@ -46,7 +56,7 @@ $(document).ready(function () {
   // MOCKUP DATI GRAFICO TORTA
   function mockupDatiTorta(data) {
     var json = data;
-    console.log(json);
+    // console.log(json);
 
     var storageIntermedio = {};
 
@@ -259,6 +269,39 @@ $(document).ready(function () {
     });
   }
   // POPOLAMENTO NOMI IN SELECT
+
+
+
+  // FUNZIONE AGGIORNAMENTO VENDITE
+  function updateSales(url) {
+    $("#myChart").empty();
+    $("#myChart-two").empty();
+    var persona = $(".who-post-to").val();
+    var meseSelezionato = $(".month-to-post").val();
+    var dataInCuiInserire = moment("01/" + meseSelezionato + "/2017", "DD/MM/YYYY");
+    var importoDaInserire = $(".text-post").val();
+    // console.log(persona);
+    // console.log(meseSelezionato);
+    // console.log(dataInCuiInserire.format("DD-MM-YYYY"));
+    // console.log(importoDaInserire);
+    $.ajax({
+      url: url,
+      method: "POST",
+      data: {
+        salesman: persona,
+        date: dataInCuiInserire.format("DD/MM/YYYY"),
+        amount: parseInt(importoDaInserire)
+      },
+      success: function (data, stato) {
+        console.log(data);
+        console.log(stato);
+      },
+      error: function (richiesta, stato, errori) {
+        alert("Qualcosa è andato storto!");
+      }
+    });
+  }
+  // FUNZIONE AGGIORNAMENTO VENDITE
 // -----------------------------------------------------FUNZIONI-----------------------------------------------------
 
 

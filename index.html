@@ -11,6 +11,7 @@
     <script src="https://kit.fontawesome.com/80a8b5f4b8.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/it.js" integrity="sha256-D8y560ZGsKY1LoAajKkQCG7y0Vkye361MH4yFv2K5kk=" crossorigin="anonymous"></script>
     <!-- google font -->
     <!-- favicon -->
   </head>
@@ -24,6 +25,28 @@
       <option value="{{persona}}">{{persona}}</option>
     </script>
   <!--SELEZIONATORE PERSONA A CUI AGGIUNGERE FATTURATO -->
+
+  <!-- MESE -->
+  <select class="month-to-post" name="">
+    <option value="01">gennaio</option>
+    <option value="02">febbraio</option>
+    <option value="03">marzo</option>
+    <option value="04">aprile</option>
+    <option value="05">maggio</option>
+    <option value="06">giugno</option>
+    <option value="07">luglio</option>
+    <option value="08">agosto</option>
+    <option value="09">settembre</option>
+    <option value="10">ottobre</option>
+    <option value="11">novembre</option>
+    <option value="12">dicembre</option>
+  </select>
+  <!-- MESE -->
+
+  <!-- AMMONTARE E BUTTON -->
+    <input class="text-post" type="text" placeholder="digita importo">
+    <button class="btn-post">Inserisci</button>
+  <!-- AMMONTARE E BUTTON -->
 
     <div class="wrapper">
       <canvas id="myChart"></canvas>
