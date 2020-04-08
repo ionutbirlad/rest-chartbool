@@ -4,35 +4,30 @@ $(document).ready(function () {
   var url = "http://157.230.17.132:" + personalNumber + "/sales";
 
 // ------------------------------------------------PRIMO GRAFICO------------------------------------------------
-  $.ajax({
-    url: url,
-    method: "GET",
-    success: function (data) {
-      var infoGrafico = mockupDatiTorta(data);
-      creazioneGraficoTorta(infoGrafico.nomi, infoGrafico.datiInPercentuale, infoGrafico.colori);
-    },
-    error: function (err) {
-      alert("Qualcosa è andato storto!");
-    }
-  });
+  ajaxCall(url, mockupDatiTorta, creazioneGraficoTorta, "torta");
 // ------------------------------------------------FINE PRIMO GRAFICO------------------------------------------------
 
 
 
 // ------------------------------------------------SECONDO GRAFICO-----------------------------------------------------
-  $.ajax({
-    url: url,
-    method: "GET",
-    success: function (data) {
-      var infoGrafico = mockupDatiLinea(data);
-      creazioneGraficoLinea(infoGrafico.mesi, infoGrafico.fatturati);
-    },
-    error: function (err) {
-      alert("Qualcosa è andato storto!");
-    }
-  });
-
+  ajaxCall(url, mockupDatiLinea, creazioneGraficoLinea, "linea");
 // ------------------------------------------------FINE SECONDO GRAFICO------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // -----------------------------------------------------FUNZIONI-----------------------------------------------------
@@ -200,6 +195,29 @@ $(document).ready(function () {
     });
   }
   // CREAZIONE GRAFICO LINEA
+
+
+
+  // CHIAMATA AJAX
+  function ajaxCall(url, mockup, createChart, type) {
+    $.ajax({
+      url: url,
+      method: "GET",
+      success: function (data) {
+        var tipologia = type;
+        var infoGrafico = mockup(data);
+        if (tipologia == "torta") {
+          createChart(infoGrafico.nomi, infoGrafico.datiInPercentuale, infoGrafico.colori);
+        } else if (tipologia == "linea") {
+          createChart(infoGrafico.mesi, infoGrafico.fatturati);
+        }
+      },
+      error: function (err) {
+        alert("Qualcosa è andato storto!");
+      }
+    });
+  }
+  // CHIAMATA AJAX
 // -----------------------------------------------------FUNZIONI-----------------------------------------------------
 
 
