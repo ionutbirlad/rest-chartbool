@@ -16,43 +16,57 @@
     <!-- favicon -->
   </head>
   <body>
-  <!--SELEZIONATORE PERSONA A CUI AGGIUNGERE FATTURATO -->
-    <select class="who-post-to" name="">
+    <div class="row">
+      <div class="wrapper-three">
+        <!--SELEZIONATORE PERSONA A CUI AGGIUNGERE FATTURATO -->
+          <div class="">
+            <select class="who-post-to" name="">
 
-    </select>
+            </select>
+          </div>
 
-    <script id="entry-template" type="text/x-handlebars-template">
-      <option value="{{persona}}">{{persona}}</option>
-    </script>
-  <!--SELEZIONATORE PERSONA A CUI AGGIUNGERE FATTURATO -->
+          <script id="entry-template" type="text/x-handlebars-template">
+            <option value="{{persona}}">{{persona}}</option>
+          </script>
+        <!--SELEZIONATORE PERSONA A CUI AGGIUNGERE FATTURATO -->
 
-  <!-- MESE -->
-  <select class="month-to-post" name="">
-    <option value="01">gennaio</option>
-    <option value="02">febbraio</option>
-    <option value="03">marzo</option>
-    <option value="04">aprile</option>
-    <option value="05">maggio</option>
-    <option value="06">giugno</option>
-    <option value="07">luglio</option>
-    <option value="08">agosto</option>
-    <option value="09">settembre</option>
-    <option value="10">ottobre</option>
-    <option value="11">novembre</option>
-    <option value="12">dicembre</option>
-  </select>
-  <!-- MESE -->
+        <!-- MESE -->
+        <div class="">
+          <select class="month-to-post" name="">
+            <option value="01">gennaio</option>
+            <option value="02">febbraio</option>
+            <option value="03">marzo</option>
+            <option value="04">aprile</option>
+            <option value="05">maggio</option>
+            <option value="06">giugno</option>
+            <option value="07">luglio</option>
+            <option value="08">agosto</option>
+            <option value="09">settembre</option>
+            <option value="10">ottobre</option>
+            <option value="11">novembre</option>
+            <option value="12">dicembre</option>
+          </select>
+        </div>
+        <!-- MESE -->
 
-  <!-- AMMONTARE E BUTTON -->
-    <input class="text-post" type="number" placeholder="digita importo">
-    <button class="btn-post">Inserisci</button>
-  <!-- AMMONTARE E BUTTON -->
-
-    <div class="wrapper-one">
-      <canvas id="myChart"></canvas>
+        <!-- AMMONTARE E BUTTON -->
+          <div class="">
+            <input class="text-post" type="number" placeholder="digita importo">
+          </div>
+          <div class="">
+            <button class="btn-post">Inserisci</button>
+          </div>
+        <!-- AMMONTARE E BUTTON -->
+      </div>
     </div>
-    <div class="wrapper-two">
-      <canvas id="myChart-two"></canvas>
+
+    <div class="row">
+      <div class="wrapper-one">
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="wrapper-two">
+        <canvas id="myChart-two"></canvas>
+      </div>
     </div>
 
     <script src="js/main.js" charset="utf-8"></script>

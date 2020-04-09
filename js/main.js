@@ -261,7 +261,6 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
     $("#myChart-two").remove();
     $(".wrapper-one").append("<canvas id='myChart'></canvas>");
     $(".wrapper-two").append("<canvas id='myChart-two'></canvas>");
-
     var persona = $(".who-post-to").val();
     $(".who-post-to").val("");
     var meseSelezionato = $(".month-to-post").val();
