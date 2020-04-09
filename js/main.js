@@ -40,18 +40,6 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 // -----------------------------------------------------FUNZIONI-----------------------------------------------------
   // MOCKUP DATI GRAFICO TORTA
   function mockupDatiTorta(data) {
@@ -66,7 +54,7 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
       if (storageIntermedio[nome] === undefined) {
         storageIntermedio[nome] = 0;
       }
-      storageIntermedio[nome] += elementoArray.amount;
+      storageIntermedio[nome] += parseInt(elementoArray.amount);
     }
     // console.log(storageIntermedio);
 
@@ -93,7 +81,7 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
 
     // console.log(labels);
     // console.log(dataGrafico);
-    console.log(dataGraficoPercentuale);
+    // console.log(dataGraficoPercentuale);
     var colors = ["#48dbfb", "#ff9f43", "#1dd1a1", "#ff9ff3"]
 
     return  {
@@ -103,7 +91,6 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
     };
   }
   // MOCKUP DATI GRAFICO TORTA
-
 
 
   // CREAZIONE GRAFICO TORTA
@@ -138,7 +125,6 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
   // CREAZIONE GRAFICO TORTA
 
 
-
   // MOCKUP DATI GRAFICO LINEA
   function mockupDatiLinea(data) {
     var json = data;
@@ -165,7 +151,7 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
       // console.log(indiceMese);
       var totaleMese = 0;
       for (var j = 0; j < json.length; j++) {
-        var dataOperazione = moment(json[j].date, "DD-MM-YYYY");
+        var dataOperazione = moment(json[j].date, "DD/MM/YYYY");
         var meseOperazione = dataOperazione.month();
         // console.log(dataOperazione);
         // console.log(meseOperazione);
@@ -183,7 +169,6 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
     };
   }
   // MOCKUP DATI GRAFICO LINEA
-
 
 
   // CREAZIONE GRAFICO LINEA
@@ -220,7 +205,6 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
   // CREAZIONE GRAFICO LINEA
 
 
-
   // CHIAMATA AJAX
   function chartAjaxCall(url, mockup, createChart, type) {
     $.ajax({
@@ -241,7 +225,6 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
     });
   }
   // CHIAMATA AJAX
-
 
 
   // POPOLAMENTO NOMI IN SELECT
@@ -272,38 +255,42 @@ var url = "http://157.230.17.132:" + personalNumber + "/sales";
   // POPOLAMENTO NOMI IN SELECT
 
 
-
   // FUNZIONE AGGIORNAMENTO VENDITE
   function updateSales(url) {
     $("#myChart").remove();
     $("#myChart-two").remove();
     $(".wrapper-one").append("<canvas id='myChart'></canvas>");
     $(".wrapper-two").append("<canvas id='myChart-two'></canvas>");
+
     var persona = $(".who-post-to").val();
+    $(".who-post-to").val("");
     var meseSelezionato = $(".month-to-post").val();
     var dataInCuiInserire = moment("01/" + meseSelezionato + "/2017", "DD/MM/YYYY");
     var importo = $(".text-post").val();
+    $(".text-post").val("");
     var importoDaInserire = parseInt(importo);
     // console.log(persona);
     // console.log(meseSelezionato);
     // console.log(dataInCuiInserire.format("DD-MM-YYYY"));
     // console.log(importoDaInserire);
-    $.ajax({
-      url: url,
-      method: "POST",
-      data: {
-        salesman: persona,
-        date: dataInCuiInserire.format("DD/MM/YYYY"),
-        amount: parseInt(importoDaInserire)
-      },
-      success: function (data, stato) {
-        console.log(data);
-        console.log(stato);
-      },
-      error: function (richiesta, stato, errori) {
-        alert("Qualcosa è andato storto!");
-      }
-    });
+    if (importo.trim().length > 0) {
+      $.ajax({
+        url: url,
+        method: "POST",
+        data: {
+          salesman: persona,
+          date: dataInCuiInserire.format("DD/MM/YYYY"),
+          amount: parseInt(importoDaInserire)
+        },
+        success: function (data, stato) {
+          console.log(data);
+          console.log(stato);
+        },
+        error: function (richiesta, stato, errori) {
+          alert("Qualcosa è andato storto!");
+        }
+      });
+    }
   }
   // FUNZIONE AGGIORNAMENTO VENDITE
 // -----------------------------------------------------FUNZIONI-----------------------------------------------------
